@@ -1,0 +1,14 @@
+# 此远程订阅用于解决QX任务脚本的cookie获取，仅适用于QX 1.0.10及更高版本，您可在使用后手动将其禁用，以避免无意义的MITM。
+
+hostname = rewards.bing.com
+
+# Bing 领取积分🎉（积分可兑换京东E卡或抽奖）
+#仅测试 surge 理应支持其他几个代理 app，请自己修改使用，没得现成的（懒）
+#作者：憨憨
+#方法：复制到对应文件下，登录 https://rewards.bing.com 获取 Cookie
+#备注：可切换地区领取积分（有些地区貌似不支持或活动做不完）
+
+^https:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js
+
+# Task
+# 0 0 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/lowking/Scripts/master/doc/icon/bingPoint.png, enabled=true
