@@ -10,5 +10,9 @@ hostname = rewards.bing.com
 
 ^https:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js
 
+# Bing 领取积分 Cookie 获取
+# 登录 https://rewards.bing.com 获取 Cookie
+#https://raw.githubusercontent.com/ArmsZhou/Scripts/main/Task/bing.cookie, tag=🍪 Bing 领取积分, update-interval=172800, opt-parser=false, enabled=false
+
 # Task
-# 0 0 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png, enabled=true
+#0 30 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png, enabled=true
