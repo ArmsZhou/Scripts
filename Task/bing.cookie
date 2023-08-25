@@ -11,4 +11,4 @@ hostname = rewards.bing.com
 ^https:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js
 
 # Task
-# 0 0 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/lowking/Scripts/master/doc/icon/bingPoint.png, enabled=true
+# 0 0 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png, enabled=true
