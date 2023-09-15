@@ -1,18 +1,77 @@
-# 此远程订阅用于解决QX任务脚本的cookie获取，仅适用于QX 1.0.10及更高版本，您可在使用后手动将其禁用，以避免无意义的MITM。
-
+/* 
+脚本功能: 获取 bing面板cookie,用于lowking脚本
+操作步骤: web访问 https://rewards.bing.com 登录即可
+[rewrite local]
+^https\:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingPoint/bingPoint.cookie.js
+[MITM]
 hostname = rewards.bing.com
 
-# Bing 领取积分🎉（积分可兑换京东E卡或抽奖）
-#仅测试 surge 理应支持其他几个代理 app，请自己修改使用，没得现成的（懒）
-#作者：憨憨
-#方法：复制到对应文件下，登录 https://rewards.bing.com 获取 Cookie
-#备注：可切换地区领取积分（有些地区貌似不支持或活动做不完）
+0 4 0,12 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=🏆BingPoint, img-url=https://raw.githubusercontent.com/GeQ1an/Rules/master/Images/Icons/Apps/Bing.png, enabled=true
+*/
 
-^https:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js
+^https\:\/\/rewards\.bing\.com url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingPoint/bingPoint.cookie.js
 
-# Bing 领取积分 Cookie 获取
-# 登录 https://rewards.bing.com 获取 Cookie
-#https://raw.githubusercontent.com/ArmsZhou/Scripts/main/Task/bing.cookie, tag=🍪 Bing 领取积分, update-interval=172800, opt-parser=false, enabled=false
+/* 
+脚本作者: @mcdasheng688
+脚本功能: 📖BingRead 新闻阅读 (国区) v1.1
+操作步骤: 
+  打开第一个账号,阅读10个新闻,下拉到底,等待金币提示or重写通知
+  打开其他账号,获取对应账号信息
+  执行任务
+🎯重写脚本:
+[rewrite local]
+^https:\/\/prod\.rewardsplatform\.microsoft\.com\/dapi\/me\/activities url script-request-body https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingRead/bingRead.cookie.js
+[MITM]
+hostname = prod.rewardsplatform.microsoft.com
+⏰定时任务:
+[task local]
+38 10 * * * https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingRead/bingRead.js, img-url=book.fill.system, tag=bingRead, enabled=true
+📦BoxJs地址:
+https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/mcdasheng.boxjs.json
+@tips:
+  🥳支持多账号
+  新闻有时效性,手动刷新是因为没抓到新闻生成地址,我也想全自动。。。
+  id是每天更新的，不可以跨天使用。
+  这样用一个账号手动观看，会自动记录id，用于其他账号做这个任务
+  如果只有一个账号，意义不大
+@params: 
+  "bingRead_ids"          阅读id个数
+  "bingRead_auths"        用户鉴权个数
+  "bingRead_timeout"      超时时间,默认100s
+  "bingRead_interval"     阅读间隔,默认2s
+  "bingRead_autoDelete"   自动删除ids,默认关闭
+*/
 
-# Task
-#0 30 8 * * ? https://raw.githubusercontent.com/lowking/Scripts/master/bing/bingPoint.js, tag=Bing 领取积分, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png, enabled=true
+^https:\/\/prod\.rewardsplatform\.microsoft\.com\/dapi\/me\/activities url script-request-body https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingRead/bingRead.cookie.js
+
+/* 
+🏆脚本功能: 获取 bingSearch Cookie v2.2
+🤓脚本作者: @mcdasheng
+🥳操作步骤: 
+  💻pc_Cookie: 
+    Bing web登录,搜索 'pc' 
+    ipad Bing app 登录,搜索 'pc' (好像获取不到了?)
+    ipad Edge app 登录,搜索 'pc'
+  📱mb_Cookie: 
+    ios Bing app登录,搜索 'testt'
+    ios Edge app登录,搜索 'testt'
+🎯重写脚本:
+[rewrite_local]
+外区: 也可以用于获取国区cookie,执行任务无效请打开"强制国区"开关
+  ^https\:\/\/www\.bing\.com\/search\?.*q=pc.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+  ^https\:\/\/www\.bing\.com\/search\?.*q=testt.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+国区:
+  ^https\:\/\/cn\.bing\.com\/search\?.*q=pc.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+  ^https\:\/\/cn\.bing\.com\/search\?.*q=testt.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+[mitm]
+  hostname = www.bing.com, cn.bing.com
+📦BoxJs订阅地址:
+  https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/mcdasheng.boxjs.json
+*/
+
+^https\:\/\/www\.bing\.com\/search\?.*q=pc.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+^https\:\/\/www\.bing\.com\/search\?.*q=testt.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+^https\:\/\/cn\.bing\.com\/search\?.*q=pc.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+^https\:\/\/cn\.bing\.com\/search\?.*q=testt.* url script-request-header https://raw.githubusercontent.com/MCdasheng/QuantumultX/main/Scripts/myScripts/Bing/bingSearch/bingSearch.cookie.js
+
+hostname = rewards.bing.com, prod.rewardsplatform.microsoft.com, www.bing.com, cn.bing.com
