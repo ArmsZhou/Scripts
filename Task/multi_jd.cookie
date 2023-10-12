@@ -5,6 +5,6 @@
 2.若是要使用京东多合一签到，请使用修改版地址：https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
 */
 
-hostname = me-api.jd.com
+hostname = api.m.jd.com
 
-https:\/\/me-api\.jd\.com\/user_new\/info\/GetJDUserInfoUnion url request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=newUserInfo  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
