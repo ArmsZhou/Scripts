@@ -1,3 +1,11 @@
+/******
+ 
+【Quantumult X】
+————————————————
+30 * * * * https://raw.githubusercontent.com/ArmsZhou/Scripts/main/DIY_JS/qinglong/ql_env.js, tag=青龙同步JD_Cookies, img-url=https://raw.githubusercontent.com/ArmsZhou/Scripts/main/IMG/ql.png, enabled=true
+
+******/
+
 //const $ = API("sync_jd_cookies_to_ql"); // 创建一个名字为weather的脚本。默认为product环境，抑制所有log输出，保持error信息。。
 const $ = API("Sync_JD_Cookies_To_Qinglong", true); // 打开debug环境，打开所有log输出
 // 请修改为自己的青龙后台应用密钥
@@ -11,21 +19,18 @@ let notifys = [];
 function getQinglongAuth() {
     return new Promise((resolve) => {
         let url = ql_server_url + "/auth/token?client_id=" + client_id + "&client_secret=" + client_secret
-        $.log("🐉 开始获取 token");
-
         $.http
             .get({
                 url: url,
                 timeout: timeout
             })
             .then((response) => {
-                $.log(response)
                 try {
                     let body = JSON.parse(response.body);
                     let code = body.code;
                     if (code != 200) {
                         let message = body.message;
-                        throw new Error("❌ 接口请求错误!!! \nurl: " + url + "\ncode: " + code + "\nmessage: " + message);
+                        throw new Error("🐉 接口请求错误!!! \nGET: " + url + "\ncode: " + code + "\nmessage: " + message);
 
                     } else {
                         let tokenType = body.data.token_type
@@ -34,13 +39,11 @@ function getQinglongAuth() {
                     }
 
                 } catch (error) {
-                    $.error(error.message)
-                    $.done()
+                    handleError(error.message);
                 }
             })
             .catch((error) => {
-                $.error(error.message)
-                $.done()
+                handleError("🐉 接口请求错误!!! \nGET: " + url + "\nerror: " + JSON.stringify(error));
             })
     })
 }
@@ -56,7 +59,7 @@ function getAllJdCookieEnv() {
                     let code = body.code;
                     if (code != 200) {
                         let message = body.message;
-                        throw new Error("❌ 接口请求错误!!! \nurl: " + url + "\ncode: " + code + "\nmessage: " + message);
+                        throw new Error("🐉 接口请求错误!!! \nGET: " + url + "\ncode: " + code + "\nmessage: " + message);
 
                     } else {
                         let envs = body.data
@@ -70,13 +73,11 @@ function getAllJdCookieEnv() {
                     }
 
                 } catch (error) {
-                    $.error(error.message)
-                    $.done()
+                    handleError(error.message);
                 }
             })
             .catch((error) => {
-                $.error(error.message)
-                $.done()
+                handleError("🐉 接口请求错误!!! \nGET: " + url + "\nerror: " + JSON.stringify(error));
             })
     })
 }
@@ -88,7 +89,7 @@ function addEnv(env) {
         $.http
             .post({
                 url: url,
-                body: jsonBody
+                body: JSON.stringify(jsonBody)
             })
             .then((response) => {
                 try {
@@ -96,22 +97,19 @@ function addEnv(env) {
                     let code = body.code;
                     if (code != 200) {
                         let message = body.message;
-                        throw new Error("❌ 接口请求错误!!! \nurl: " + url + "\ncode: " + code + "\nmessage: " + message);
+                        throw new Error("🐉 接口请求错误!!! \nPOST: " + url + "\ncode: " + code + "\nmessage: " + message);
 
                     } else {
                         let env = body.data[0]
-                        notifys.push("🐉 添加变量成功:\n" + JSON.stringify(env));
-                        resolve();
+                        resolve(env);
                     }
 
                 } catch (error) {
-                    $.error(error.message)
-                    $.done()
+                    handleError(error.message);
                 }
             })
             .catch((error) => {
-                $.error(error.message)
-                $.done()
+                handleError("🐉 接口请求错误!!! \nPOST: " + url + "\nerror: " + JSON.stringify(error));
             })
     })
 }
@@ -123,7 +121,7 @@ function updateEnv(env) {
         $.http
             .put({
                 url: url,
-                body: jsonBody
+                body: JSON.stringify(jsonBody)
             })
             .then((response) => {
                 try {
@@ -131,21 +129,18 @@ function updateEnv(env) {
                     let code = body.code;
                     if (code != 200) {
                         let message = body.message;
-                        throw new Error("❌ 接口请求错误!!! \nurl: " + url + "\ncode: " + code + "\nmessage: " + message);
+                        throw new Error("🐉 接口请求错误!!! \nPUT: " + url + "\ncode: " + code + "\nmessage: " + message);
 
                     } else {
-                        notifys.push("🐉 更新变量成功:\n" + JSON.stringify(env));
-                        resolve();
+                        resolve(true);
                     }
 
                 } catch (error) {
-                    $.error(error.message)
-                    $.done()
+                    handleError(error.message);
                 }
             })
             .catch((error) => {
-                $.error(error.message)
-                $.done()
+                handleError("🐉 接口请求错误!!! \nPUT: " + url + "\nerror: " + JSON.stringify(error));
             })
     })
 }
@@ -157,7 +152,7 @@ function enableEnv(env) {
         $.http
             .put({
                 url: url,
-                body: jsonBody
+                body: JSON.stringify(jsonBody)
             })
             .then((response) => {
                 try {
@@ -165,11 +160,10 @@ function enableEnv(env) {
                     let code = body.code;
                     if (code != 200) {
                         let message = body.message;
-                        throw new Error("❌ 接口请求错误!!! \nurl: " + url + "\ncode: " + code + "\nmessage: " + message);
+                        throw new Error("🐉 接口请求错误!!! \nPUT: " + url + "\ncode: " + code + "\nmessage: " + message);
 
                     } else {
-                        notifys.push("🐉 启用变量成功:\n" + JSON.stringify(env));
-                        resolve();
+                        resolve(true);
                     }
 
                 } catch (error) {
@@ -178,66 +172,134 @@ function enableEnv(env) {
                 }
             })
             .catch((error) => {
-                $.error(error.message)
+                $.error("🐉 接口请求错误!!! \nPUT: " + url + "\nerror: " + JSON.stringify(error));
                 $.done()
             })
     })
 }
 
 (async function () {
+    let auth = await getQinglongAuth();
+    $.log("🐉 授权获取成功: " + auth)
+
+    // 统一设置后续请求，带 auth
+    $.http = HTTP({
+        baseURL: ql_server_url,
+        timeout: timeout,
+        headers: {
+            Authorization: auth,
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
+            "Content-Type": "application/json"
+        }
+    });
+
+    let jdCookieEnvs = await getAllJdCookieEnv();
+    $.log("🐉 青龙现有👉【" + jdCookieEnvs.length + "】个 JD_COOKIE 环境变量:\n" + JSON.stringify(jdCookieEnvs));
+
     let value = $.read("#CookiesJD");
     var jd_users;
     if (value != "" && value != undefined) {
         jd_users = JSON.parse(value);
-        $.log(jd_users)
+        $.log("🐉 本地发现👉【" + jd_users.length + "】个 JD Cookies:\n" + JSON.stringify(jd_users));
 
     } else {
-        throw ("❌ 未找到 JD Cookie，请先获取 JD Cookie 后再尝试");
+        throw ("🐉 未找到 JD Cookie，请先获取 JD Cookie 后再尝试");
     }
 
     var jd_user_names = []
     jd_users.forEach((user) => {
         jd_user_names.push(user.userName);
     });
-    notifys.push("\n共获取【" + jd_users.length + "】个🐶京东账号：\n" + jd_user_names.join("\n"));
-
-    let anth = await getQinglongAuth();
-    $.log("🐉 auth 获取成功: " + anth)
-
-    // 统一设置后续请求，带 anth
-    $.http = HTTP({
-        baseURL: ql_server_url,
-        timeout: timeout,
-        headers: {
-            Authorization: anth,
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
-            'Content-Type': 'application/json'
-        }
-    });
-
-    let jdCookieEnvs = await getAllJdCookieEnv();
-    $.log("jdCookieEnvs:\n" + jdCookieEnvs);
-
+    $.log("\n🐉 本地共发现👉【" + jd_users.length + "】个🐶京东账号：\n--------\n" + jd_user_names.join("\n") + "\n--------");
+    $.log("🐉 开始同步京东 Cookie 到青龙 ⬆️⬆️⬆️");
+    $.log("--------");
     // 对比 JD Cookie 和 青龙 Env 来决定是新增还是更新
-    
+    for (const user of jd_users) {
+        $.log("🐉 开始同步京东账号【" + user.userName + "】");
+        var env = undefined;
+        for (const e of jdCookieEnvs) {
+            let regex = /pt_pin=([^;]+)/;
+            let match = regex.exec(e.value);
+            let pt_pin = match[1];
+            if (user.userName === pt_pin) {
+                env = e;
+                break;
+            }
+        }
 
+        if (env === undefined) {
+            $.log("🐉 Cookie 不存在，开始添加 ⬆️");
+            env = {
+                value: user.cookie,
+                name: "JD_COOKIE",
+                remarks: user.userName
+            }
+            let results = await addEnv(env);
 
-})().catch(e => {
-    notifys.push("JD Cookie 同步青龙 🐉 失败", "", e.message || JSON.stringify(e))
+            if (results === undefined) {
+                $.log("🐉 Cookie 添加失败 ❌");
+            } else {
+                $.log("🐉 Cookie 添加成功 ✅");
+            }
 
-}).finally(() => {
-    if (notifys.length > 0) {
-        notify(notifys);
+            let enable = await enableEnv(results);
+            if (enable) {
+                $.log("🐉 环境变量启用成功 ✅");
+            } else {
+                $.log("🐉 环境变量启用失败 ❌");
+            }
+
+        } else if (user.cookie === env.value) {
+            $.log("🐉 Cookie 未变化 ⏸️");
+
+            let enable = await enableEnv(env);
+            if (enable) {
+                $.log("🐉 环境变量启用成功 ✅");
+            } else {
+                $.log("🐉 环境变量启用失败 ❌");
+            }
+
+        } else {
+            $.log("🐉 Cookie 发生变化，开始更新 🔁");
+            let success = await updateEnv(env);
+            if (success) {
+                $.log("🐉 Cookie 更新成功 ✅");
+            } else {
+                $.log("🐉 Cookie 更新失败 ❌");
+            }
+
+            let enable = await enableEnv(env);
+            if (enable) {
+                $.log("🐉 环境变量启用成功 ✅");
+            } else {
+                $.log("🐉 环境变量启用失败 ❌");
+            }
+        }
+
+        $.log("--------");
     }
 
-    $.info("🏁 脚本执行完毕")
-    $.done();
-})
+})().catch(e => {
+    handleError("🐉 JD Cookie 同步青龙失败", "", e.message || JSON.stringify(e));
+
+}).finally(() => {
+    notify(notifys);
+});
+
+function handleError(message) {
+    notifys.push(message);
+    notify(notifys);
+}
 
 function notify(notifys) {
-    notifys = notifys.join("\n");
-    $.log(JSON.stringify(notifys));
-    $.notify("Sync_JD_Cookies_To_Qinglong", "", notifys);
+    if (notifys.length > 0) {
+        notifys = notifys.join("\n");
+        $.log(notifys);
+        $.notify("Sync_JD_Cookies_To_Qinglong", "", notifys);
+    }
+
+    $.log("🐉 脚本执行完毕")
+    $.done();
 }
 
 /**
@@ -589,15 +651,15 @@ function API(name = "untitled", debug = false) {
 
         // other helper functions
         log(msg) {
-            if (this.debug) console.log(`[${this.name}] LOG: ${this.stringify(msg)}`);
+            if (this.debug) console.log(`[${this.name}] LOG: \n${this.stringify(msg)}`);
         }
 
         info(msg) {
-            console.log(`[${this.name}] INFO: ${this.stringify(msg)}`);
+            console.log(`[${this.name}] INFO: \n${this.stringify(msg)}`);
         }
 
         error(msg) {
-            console.log(`[${this.name}] ERROR: ${this.stringify(msg)}`);
+            console.log(`[${this.name}] ERROR: \n${this.stringify(msg)}`);
         }
 
         wait(millisec) {
