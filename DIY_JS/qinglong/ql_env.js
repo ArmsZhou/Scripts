@@ -12,7 +12,7 @@ const $ = API("Sync_JD_Cookies_To_Qinglong", true); // 打开debug环境，打�
 let client_id = "W7aeJp1d-qW1"
 let client_secret = "Lv5IGZ1bnMtvq-vaQ0phhDos"
 let ql_server_url = "http://qinglong.alonegeek.com:57088/open"
-let timeout = 3000
+let timeout = 15000
 
 let notifys = [];
 
@@ -227,6 +227,7 @@ function enableEnv(env) {
             }
         }
 
+        var changed = false;
         if (env === undefined) {
             $.log("🐉 Cookie 不存在，开始添加 ⬆️");
             env = {
@@ -234,30 +235,18 @@ function enableEnv(env) {
                 name: "JD_COOKIE",
                 remarks: user.userName
             }
-            let results = await addEnv(env);
+            env = await addEnv(env);
 
-            if (results === undefined) {
+            if (env === undefined) {
                 $.log("🐉 Cookie 添加失败 ❌");
             } else {
                 $.log("🐉 Cookie 添加成功 ✅");
             }
 
-            let enable = await enableEnv(results);
-            if (enable) {
-                $.log("🐉 环境变量启用成功 ✅");
-            } else {
-                $.log("🐉 环境变量启用失败 ❌");
-            }
+            changed = true;
 
         } else if (user.cookie === env.value) {
             $.log("🐉 Cookie 未变化 ⏸️");
-
-            let enable = await enableEnv(env);
-            if (enable) {
-                $.log("🐉 环境变量启用成功 ✅");
-            } else {
-                $.log("🐉 环境变量启用失败 ❌");
-            }
 
         } else {
             $.log("🐉 Cookie 发生变化，开始更新 🔁");
@@ -268,6 +257,11 @@ function enableEnv(env) {
                 $.log("🐉 Cookie 更新失败 ❌");
             }
 
+            changed = true;
+        }
+
+        if (env.status == 1 && changed == true) {
+            $.log("🐉 环境变量被禁用，开始启用");
             let enable = await enableEnv(env);
             if (enable) {
                 $.log("🐉 环境变量启用成功 ✅");
