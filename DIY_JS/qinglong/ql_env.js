@@ -227,7 +227,6 @@ function enableEnv(env) {
             }
         }
 
-        var changed = false;
         if (env === undefined) {
             $.log("🐉 Cookie 不存在，开始添加 ⬆️");
             env = {
@@ -243,25 +242,27 @@ function enableEnv(env) {
                 $.log("🐉 Cookie 添加成功 ✅");
             }
 
-            changed = true;
-
         } else if (user.cookie === env.value) {
             $.log("🐉 Cookie 未变化 ⏸️");
 
         } else {
             $.log("🐉 Cookie 发生变化，开始更新 🔁");
-            env.value = user.cookie;
-            let success = await updateEnv(env);
+            // 不能传过多参数，后台会判断错误
+            newEnv = {
+                value: user.cookie,
+                name: "JD_COOKIE",
+                remarks: user.userName,
+                id: env.id
+            }
+            let success = await updateEnv(newEnv);
             if (success) {
                 $.log("🐉 Cookie 更新成功 ✅");
             } else {
                 $.log("🐉 Cookie 更新失败 ❌");
             }
-
-            changed = true;
         }
 
-        if (env.status == 1 && changed == true) {
+        if (env.status == 1) {
             $.log("🐉 环境变量被禁用，开始启用");
             let enable = await enableEnv(env);
             if (enable) {
@@ -269,6 +270,9 @@ function enableEnv(env) {
             } else {
                 $.log("🐉 环境变量启用失败 ❌");
             }
+
+        } else {
+            $.log("🐉 环境变量当前启用中 ✅");
         }
 
         $.log("--------");
