@@ -250,6 +250,7 @@ function enableEnv(env) {
 
         } else {
             $.log("🐉 Cookie 发生变化，开始更新 🔁");
+            env.value = user.cookie;
             let success = await updateEnv(env);
             if (success) {
                 $.log("🐉 Cookie 更新成功 ✅");
