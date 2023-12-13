@@ -117,7 +117,7 @@ function addEnv(env) {
 function updateEnv(env) {
     return new Promise((resolve) => {
         let url = "/envs"
-        let jsonBody = [env]
+        let jsonBody = env
         $.http
             .put({
                 url: url,
