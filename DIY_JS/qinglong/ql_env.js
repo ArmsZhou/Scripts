@@ -11,7 +11,7 @@ const $ = API("Sync_JD_Cookies_To_Qinglong", true); // 打开debug环境，打�
 // 请修改为自己的青龙后台应用密钥
 let client_id = "W7aeJp1d-qW1"
 let client_secret = "Lv5IGZ1bnMtvq-vaQ0phhDos"
-let ql_server_url = "http://astroman.asuscomm.com:57088/open"
+let ql_server_url = "http://astroman.myddns.me:57088/open"
 let timeout = 15000
 
 let notifys = [];
