@@ -9,8 +9,8 @@
 //const $ = API("sync_jd_cookies_to_ql"); // 创建一个名字为weather的脚本。默认为product环境，抑制所有log输出，保持error信息。。
 const $ = API("Sync_JD_Cookies_To_Qinglong", true); // 打开debug环境，打开所有log输出
 // 请修改为自己的青龙后台应用密钥
-let client_id = "ebJX_KjP3qTi"
-let client_secret = "GOX-tbR-X-XnsL1KbnnMrQb-"
+let client_id = "Ky-fuMZn0wfG"
+let client_secret = "vpdUTSrbReTo8soaesXwA_6J"
 let ql_server_url = "http://astroman.myddns.me:10066/open"
 let timeout = 15000
 
